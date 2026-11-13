@@ -1,0 +1,32 @@
+# mycel node config. Every default is the private / conservative choice.
+name = "my-node"
+control_port = 7800          # dashboard + local OpenAI API; ALWAYS bound to 127.0.0.1
+serve = true                 # false = client-only: use the mesh without donating
+
+[mesh]
+bind_host = "127.0.0.1"      # loopback by default. See README "Going multi-machine".
+port = 7700
+# allow_non_loopback = false # must be set true AND bind_host must be a specific overlay IP
+# advertise_addr = "100.64.0.7:7700"
+bootstrap = []               # ["<node-id>@100.64.0.2:7700", ...] — membership codes include these
+# Membership is invitation-only: join from the app (Settings → Membership) with a membership code.
+
+[limits]                     # HARD limits on what the mesh may use
+max_share = 0.25             # fraction of GPU wall-clock time (sliding window)
+window_s = 60
+max_concurrent = 1
+max_tokens_per_job = 1024
+daily_seconds = 0            # 0 = no daily cap
+per_peer_per_min = 6
+paused = false
+
+[location]                   # OFF by default; coordinates never leave this machine
+share = false
+# lat = 6.5
+# lon = 3.4
+precision = "region"         # continent | country | region (~156 km) | metro (~39 km, finest)
+
+[backend]
+kind = "openai"              # "openai" = any local OpenAI-compatible server; "none" = client-only
+base_url = "http://127.0.0.1:8080"   # e.g. llama-server, Ollama (:11434), vLLM, LM Studio
+models = []                  # empty = ask the server

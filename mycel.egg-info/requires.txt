@@ -1,0 +1,14 @@
+aiohttp>=3.9
+cryptography>=48
+psutil>=5.9
+numpy>=1.26
+regex>=2023
+
+[dev]
+pytest>=8
+
+[gpu]
+torch>=2.5
+
+[probe]
+torch>=2.2

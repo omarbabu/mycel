@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Mycel cards</title>
+<style>
+:root { --grad: linear-gradient(135deg, #6ea8ff 0%, #8b7bff 48%, #3fd7c3 100%); }
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1920px; height: 1080px; background: #07070a; color: #f4f3f0; overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.glow { position: fixed; inset: -20%; pointer-events: none;
+  background: radial-gradient(35% 35% at 30% 25%, rgba(110,168,255,.22), transparent 70%),
+              radial-gradient(30% 30% at 72% 72%, rgba(63,215,195,.16), transparent 70%),
+              radial-gradient(28% 28% at 62% 30%, rgba(139,123,255,.2), transparent 70%);
+  animation: drift 14s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: translate(3%, -2%) scale(1.05); } }
+.scene { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 200px; }
+.scene.on { display: flex; }
+h1 { font-size: 132px; font-weight: 750; letter-spacing: -0.045em; line-height: 1; }
+h2 { font-size: 76px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.08; }
+p { font-size: 34px; color: #b9b8b2; margin-top: 28px; letter-spacing: -0.01em; line-height: 1.4; }
+.g { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.in { opacity: 0; transform: translateY(24px); animation: in 1s cubic-bezier(.2,.8,.2,1) forwards; }
+.d1 { animation-delay: .5s; } .d2 { animation-delay: 1.3s; } .d3 { animation-delay: 2.1s; }
+@keyframes in { to { opacity: 1; transform: none; } }
+svg.mark { width: 220px; height: 220px; margin-bottom: 48px; overflow: visible; }
+.mark .edge { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw 1.2s ease forwards; }
+.mark .node { transform-origin: center; transform-box: fill-box; transform: scale(0); animation: pop .5s cubic-bezier(.3,1.6,.5,1) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { to { transform: scale(1); } }
+.pulse { animation: pulse 2.4s ease-in-out 1.8s infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes pulse { 50% { transform: scale(1.25); opacity: .7; } }
+.stat-row { display: flex; gap: 90px; margin-top: 60px; }
+.stat b { display: block; font-size: 64px; font-weight: 700; letter-spacing: -0.03em; }
+.stat span { font-size: 24px; color: #7f7e79; }
+.small { font-size: 22px; color: #7f7e79; margin-top: 60px; }
+canvas { position: absolute; inset: 0; }
+</style></head>
+<body><div class="glow"></div>
+<canvas id="net" width="1920" height="1080"></canvas>
+
+<section class="scene" id="title">
+  <svg class="mark" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6ea8ff"/><stop offset=".5" stop-color="#8b7bff"/><stop offset="1" stop-color="#3fd7c3"/></linearGradient></defs>
+    <path class="edge" d="M32 6L54 19L54 45L32 58L10 45L10 19Z" fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linejoin="round"/>
+    <g id="spokes"></g><circle class="node pulse" cx="32" cy="32" r="6.5" fill="url(#g)" style="animation-delay:.9s"/>
+  </svg>
+  <h1 class="in d1">Mycel</h1>
+  <p class="in d2">Intelligence, <span class="g">shared.</span></p>
+</section>
+
+<section class="scene" id="problem">
+  <h2 class="in">The best open models need <span class="g">48 GB</span>.<br>Most GPUs have 8.</h2>
+  <p class="in d2">So the best AI still lives in a handful of data centers.</p>
+</section>
+
+<section class="scene" id="idea">
+  <h2 class="in">Mycel splits them across<br><span class="g">many people's GPUs.</span></h2>
+  <p class="in d2">Layer by layer. Owned by no one. Your words never leave your device.</p>
+</section>
+
+<section class="scene" id="end">
+  <svg class="mark" viewBox="0 0 64 64" style="width:150px;height:150px;margin-bottom:36px">
+    <path d="M32 6L54 19L54 45L32 58L10 45L10 19Z" fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linejoin="round"/>
+    <circle cx="32" cy="32" r="6.5" fill="url(#g)"/></svg>
+  <h2 class="in">Bring your GPU. <span class="g">Join the mesh.</span></h2>
+  <div class="stat-row in d2">
+    <div class="stat"><b>70B</b><span>on 8 GB GPUs</span></div>
+    <div class="stat"><b>0</b><span>open ports</span></div>
+    <div class="stat"><b>0</b><span>words seen by the swarm</span></div>
+  </div>
+  <p class="small in d3">Mycel · demo footage shows a simulated network on one machine</p>
+</section>
+
+<script>
+const pts = [[32,6],[54,19],[54,45],[32,58],[10,45],[10,19]];
+const sp = document.getElementById("spokes");
+pts.forEach(([x, y], i) => {
+  sp.insertAdjacentHTML("beforeend", `<line class="edge" x1="32" y1="32" x2="${x}" y2="${y}" stroke="url(#g)" stroke-width="2" opacity=".55" style="animation-delay:${.3 + i * .08}s"/>`);
+  sp.insertAdjacentHTML("beforeend", `<circle class="node" cx="${x}" cy="${y}" r="4" fill="url(#g)" style="animation-delay:${.6 + i * .07}s"/>`);
+});
+const show = () => { document.querySelectorAll(".scene").forEach((s) => s.classList.toggle("on", "#" + s.id === location.hash));
+  document.getElementById("net").style.display = location.hash === "#idea" ? "block" : "none"; };
+addEventListener("hashchange", show); show();
+// Living network for the "idea" scene: nodes drift and link to near neighbours.
+const c = document.getElementById("net").getContext("2d");
+const N = 70, nodes = Array.from({ length: N }, (_, i) => ({ x: Math.random() * 1920, y: Math.random() * 1080,
+  vx: (Math.random() - .5) * .5, vy: (Math.random() - .5) * .5, born: i * 40 }));
+const t0 = performance.now();
+(function frame(now) {
+  const t = now - t0;
+  c.clearRect(0, 0, 1920, 1080);
+  for (const n of nodes) { n.x = (n.x + n.vx + 1920) % 1920; n.y = (n.y + n.vy + 1080) % 1080; }
+  for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+    const a = nodes[i], b = nodes[j]; if (t < a.born || t < b.born) continue;
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    if (d < 230) { c.strokeStyle = `rgba(139,123,255,${(1 - d / 230) * .22})`; c.lineWidth = 1.2; c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke(); }
+  }
+  for (const n of nodes) { if (t < n.born) continue; c.fillStyle = "rgba(110,168,255,.75)"; c.beginPath(); c.arc(n.x, n.y, 3.2, 0, 7); c.fill(); }
+  requestAnimationFrame(frame);
+})(t0);
+</script></body></html>

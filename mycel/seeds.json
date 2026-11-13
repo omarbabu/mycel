@@ -1,0 +1,5 @@
+{
+  "_comment": "Public relays every fresh install starts from (wss:// only). Empty until the first relays are approved and deployed; see deploy/relay/README.md. Once a node has joined, it also remembers relays it learns from peers, so this list is only needed for the very first connection.",
+  "version": 1,
+  "relays": []
+}

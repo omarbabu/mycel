@@ -1,0 +1,11 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "domain": "relay.example.org",
+    "hostedZoneId": "Z0000000000000000000",
+    "zoneName": "example.org",
+    "relays": ["a", "b"],
+    "region": "",
+    "alarmEmail": ""
+  }
+}
