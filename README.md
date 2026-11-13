@@ -24,6 +24,8 @@ No accounts. No company in the middle. No open ports on your machine.
  └───────────────────────────────┘
 ```
 
+> note: No public relays exist yet. Where they run, who pays and who operates them is a decision for launch. Real-internet tests have only been simulated locally.
+
 ## See it in one minute
 
 ```bash
